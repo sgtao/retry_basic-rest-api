@@ -33,6 +33,20 @@ app.get(apiPath, (req, res) => {
   db.close();
 });
 //
+// Search users with name matching keyword
+apiPath = '/api/v1/search' // 
+app.get(apiPath, (req, res) => {
+  const keyword = req.query.q;
+  console.log("receive GET method at " + apiPath + ' with ' + keyword)
+  // Connect database
+  const db = new sqlite3.Database(dbPath);
+  // sqliteのWHERE name LIKE ... で検索（今回は部分一致(%を前後においてるから)
+  db.all(`SELECT * FROM users WHERE name LIKE "%${keyword}%"`, (err, rows) => {
+    res.json(rows)
+  });
+  db.close();
+});
+//
 // define port, start listen
 const port = process.env.PORT || 3000;
 app.listen(port)

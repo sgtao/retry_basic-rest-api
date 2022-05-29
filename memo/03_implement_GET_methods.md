@@ -226,3 +226,42 @@ shogo@raspberrypi4:$ curl -X GET http://localhost:3000/api/v1/users/3 | jq
 }
 shogo@raspberrypi4:$
 ```
+
+
+### ３．ユーザ名の検索
+- ソース変更（追加）
+
+```JavaScript
+// Search users with name matching keyword
+apiPath = '/api/v1/search' // 
+app.get(apiPath, (req, res) => {
+  const keyword = req.query.q;
+  console.log("receive GET method at " + apiPath + ' with ' + keyword)
+  // Connect database
+  const db = new sqlite3.Database(dbPath);
+  // sqliteのWHERE name LIKE ... で検索（今回は部分一致(%を前後においてるから)
+  db.all(`SELECT * FROM users WHERE name LIKE "%${keyword}%"`, (err, rows) => {
+    res.json(rows)
+  });
+  db.close();
+});
+```
+
+- 実行結果（クライアント側）
+```JSON
+shogo@raspberrypi4:$ curl -X GET http://localhost:3000/api/v1/search?q=rem | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   169  100   169    0     0   5827      0 --:--:-- --:--:-- --:--:--  6035
+[
+  {
+    "id": 4,
+    "name": "Rem",
+    "profile": "はい、スバルくんのレムです。",
+    "created_at": "2022-05-29 17:42:33",
+    "updated_at": "2022-05-29 17:42:33",
+    "date_of_birth": null
+  }
+]
+shogo@raspberrypi4:$
+```
