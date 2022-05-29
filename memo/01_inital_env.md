@@ -34,7 +34,7 @@ npm init
 - install using npm
 
 ```
-npm install node-dev express sqlite3 body-parser --save-dev
+npm install node-dev express sqlite3 body-parser path --save-dev
 ```
 
 ## first implement

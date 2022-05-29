@@ -76,6 +76,12 @@ CREATE TABLE users (
 );
 ```
 
+- DB の削除
+
+```
+DROP TABLE users;
+```
+
 - `.schema`を実行すると、テーブルの構造が表示される野で、確認に利用
 
 - 記録：
@@ -129,3 +135,5 @@ npm run connect
 ## sqlite> -- [Ctrl+D] で終了
 # shogo@raspberrypi4:$
 ```
+
+- 参考：[SQLite 入門](https://www.dbonline.jp/sqlite/)

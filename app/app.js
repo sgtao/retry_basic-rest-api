@@ -1,9 +1,18 @@
 const express = require('express')
+const sqlite3 = require('sqlite3')
 const app = express()
+const dbPath = "app/db/database.sqlite3"
 //
-// define express method
-app.get('/api/v1/hello', (req, res) => {
-  res.json({ "message": "Hello, World!" })
+// Get users list
+let apiPath = '/api/v1/users'
+app.get(apiPath, (req, res) => {
+  console.log("receive GET method at " + apiPath)
+  const db = new sqlite3.Database(dbPath) // 接続
+  // 下がDB処理
+  db.all('SELECT * FROM users', (err, rows) => {
+    res.status(200).json(rows);
+  }) // 処理
+  db.close() // 終了（必ず行う）
 })
 //
 // define port, start listen
