@@ -61,6 +61,7 @@ SELECT * FROM users;
 ```
 
 - 記録：
+
 ```SQL
 $ sqlite3 app/db/database.sqlite3
 SQLite version 3.27.2 2019-02-25 16:06:06
@@ -87,10 +88,10 @@ sqlite>
 shogo@raspberrypi4:$
 ```
 
+## REST サーバの実装：
 
-## RESTサーバの実装：
+### １．ユーザリストの取得：
 
-- ユーザリストの取得のみ：
 ```JavaScript
 const express = require('express')
 const sqlite3 = require('sqlite3')
@@ -118,12 +119,13 @@ console.log("Listen on port : " + port)
 ```
 
 - 実行例（サーバ側）：
+
 ```shell
 shogo@raspberrypi4:$ npm run start
-# 
+#
 # > trace-basic-rest-api@1.0.0 start
 # > node-dev app/app.js
-# 
+#
 # Listen on port : 3000
 # receive GET method at /api/v1/users
 # [Ctrl+C] で終了
@@ -131,6 +133,7 @@ shogo@raspberrypi4:$ npm run start
 ```
 
 - 実行例（クライアント側）：
+
 ```JSON
 @raspberrypi4:$ curl -X GET http://localhost:3000/api/v1/users/ | jq
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -181,3 +184,45 @@ shogo@raspberrypi4:$ npm run start
 shogo@raspberrypi4:$
 ```
 
+### ２．ユーザー情報の取得
+
+- ソース変更（追加）
+
+```JavaScript
+//
+// Get a user
+apiPath = '/api/v1/users/:id' // `:id`の中には動的に値が入る
+app.get(apiPath, (req, res) => {
+  const id = req.params.id;
+  // console.log("receive request is ")
+  // console.dir(req)
+  console.log("receive GET method at " + apiPath + ' of ' + id)
+  // Connect database
+  const db = new sqlite3.Database(dbPath);
+  //
+  // DBをidで選択。
+  // `...`(バッククォート)を使うことで、${...}の内部（${id})はJabaScriptの世界に
+  db.get(`SELECT * FROM users WHERE id = ${id}`, (err, row) => {
+    res.status(200).json(row)
+  })
+  db.close();
+});
+```
+
+- 実行ログ（クライアント側）：
+
+```JSON
+shogo@raspberrypi4:$ curl -X GET http://localhost:3000/api/v1/users/3 | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   194  100   194    0     0   7760      0 --:--:-- --:--:-- --:--:--  8083
+{
+  "id": 3,
+  "name": "Ram",
+  "profile": "いいえお客様、きっと生まれて来たのが間違いだわ",
+  "created_at": "2022-05-29 17:42:33",
+  "updated_at": "2022-05-29 17:42:33",
+  "date_of_birth": null
+}
+shogo@raspberrypi4:$
+```
