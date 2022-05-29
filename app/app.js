@@ -1,7 +1,18 @@
 const express = require('express')
 const sqlite3 = require('sqlite3')
+const path = require('path')
+const bodyParser = require('body-parser');
 const app = express()
 const dbPath = "app/db/database.sqlite3"
+//
+// WebServerとしての設定を追加：
+// リクエストのbodyをパースする設定
+// （JSONデータのPOSTリクエスト等を処理するため）
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+// publicディレクトリを静的ファイルのルートディレクトリとして設定
+app.use(express.static(path.join(__dirname, 'public')));
+//
 //
 // Get users list
 let apiPath = '/api/v1/users'
