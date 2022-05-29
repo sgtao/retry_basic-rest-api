@@ -1,5 +1,6 @@
-# retrace_course of TraHack "basic-rest-api"
-- もう一度「WebAPIハンズオン」を実装してみる
+# retry_basic-rest-api
+- retry courses of ToraHack's "basic-rest-api"
+  - もう一度「WebAPIハンズオン」を実装してみる
   - refer Utube : https://www.youtube.com/watch?v=9GGRICOjA4c&list=PLX8Rsrpnn3IVW5P1H1s_AOP0EEyMyiRDA
   - refer GitHub : https://github.com/deatiger/basic-rest-api
 

@@ -2,7 +2,7 @@
 
 - 『GET 用 API のハンズオン開発』をやってみる
   - refer Utube : https://www.youtube.com/watch?v=dURpu7Bjr_Y&list=PLX8Rsrpnn3IVW5P1H1s_AOP0EEyMyiRDA&index=4
-  - Ｇ ET メソッドの応答を実装する(ユーザリスト、ユーザ情報、検索)
+  - GET メソッドの応答を実装する(ユーザリスト、ユーザ情報、検索)
     1. ユーザリスト取得：`curl -X GET http://localhost:3000/api/v1/users`
     2. ユーザ情報取得：`curl -X GET http://localhost:3000/api/v1/users/1`
     3. 検索：`curl -X GET http://localhost:3000/api/v1/search?q=subaru`
