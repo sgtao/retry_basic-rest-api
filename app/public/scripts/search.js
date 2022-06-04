@@ -10,8 +10,18 @@ const searchModule = (() => {
       const query = document.querySelector("#search").value
       const dispatch_path = BASE_URL + '?q=' + query
       console.dir('search ' + query + ' by access to ' + dispatch_path)
-      const res = await fetch(dispatch_path)
-      const result = await res.json()
+      // axios でのユーザ情報取得
+      let result = []
+      await axios.get(dispatch_path)
+        .then((axios_res) => {
+          // handle success
+          console.log(axios_res)
+          result = axios_res.data
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error)
+        })
       console.dir(result);
       let body = ""
 
