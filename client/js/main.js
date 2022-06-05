@@ -7,6 +7,7 @@ const app = Vue.createApp({
     hostname_l: '192.168.10.9',
     portnum_l: '3000',
     base_url: "",
+    config: {},
   }),
   watch: { // define watched data
     keyword: function (newKeyword, oldKeyword) {
@@ -21,7 +22,7 @@ const app = Vue.createApp({
     // this.getAnswer()
     this.fetchAllUsers()
     // 
-    this.debouncedGetAnswer = _.debounce(this.fetchAllUsers, 2000)
+    this.debouncedGetAnswer = _.debounce(this.searchUsers, 2000)
   },
   methods: { // define methods 
     // APIからデータを取得する
@@ -29,7 +30,7 @@ const app = Vue.createApp({
       // await で応答を待ちながら処理する
       // axios でのユーザ情報取得
       this.base_url = "http://" + this.hostname_l + ":" + this.portnum_l + "/api/v1/users"
-      let config = {
+      this.config = {
         headers: {
           "Content-Type": "application/json",
           'Access-Control-Allow-Origin': '*',
@@ -37,7 +38,7 @@ const app = Vue.createApp({
         },
       }
       console.log('access to ' + this.base_url)
-      axios.get(this.base_url, config)
+      axios.get(this.base_url, this.config)
         .then((axios_res) => {
           // handle success
           console.log(axios_res)
@@ -47,6 +48,25 @@ const app = Vue.createApp({
           // handle error
           console.log(error)
         })
+    },
+    searchUsers: function () {
+      // 検索窓への入力を取得
+      const query = this.keyword
+      this.base_url = "http://" + this.hostname_l + ":" + this.portnum_l + "/api/v1/search"
+      const dispatch_path = this.base_url + '?q=' + query
+      console.dir('search ' + query + ' by access to ' + dispatch_path)
+      // axios でのユーザ情報取得
+      axios.get(dispatch_path, this.config)
+        .then((axios_res) => {
+          // handle success
+          console.log(axios_res)
+          this.users = axios_res.data
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error)
+        })
+      this.message = ''
     },
   },
 })
