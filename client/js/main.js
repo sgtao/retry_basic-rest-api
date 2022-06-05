@@ -41,6 +41,7 @@ const app = Vue.createApp({
         .then((axios_res) => {
           // handle success
           console.log(axios_res)
+          this.users = axios_res.data
         })
         .catch((error) => {
           // handle error

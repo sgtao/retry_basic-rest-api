@@ -24,10 +24,16 @@
         <th>誕生日</th>
         <th>登録日時</th>
         <th>更新日時</th>
-        <th>メニュー</th>
       </thead>
       <tbody id="users-list">
-
+        <tr v-for="user in users">
+          <td>{{user.id}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.profile}}</td>
+          <td>{{user.date_of_birth}}</td>
+          <td>{{user.created_at}}</td>
+          <td>{{user.updated_at}}</td>
+        </tr>
       </tbody>
   </table>
   </div>
