@@ -33,8 +33,6 @@ const app = Vue.createApp({
       this.config = {
         headers: {
           "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': '*',
-          "mode": 'no-cors',
         },
       }
       console.log('access to ' + this.base_url)
