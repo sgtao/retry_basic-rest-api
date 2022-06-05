@@ -13,6 +13,17 @@ app.use(bodyParser.json());
 // publicディレクトリを静的ファイルのルートディレクトリとして設定
 app.use(express.static(path.join(__dirname, 'public')));
 //
+// append setting for CORS
+// refer MDN : https://developer.mozilla.org/ja/docs/Web/HTTP/CORS
+// refer Qiita : https://qiita.com/chenglin/items/5e563e50d1c32dadf4c3
+const cors = require('cors')
+// let allow_origin = ['http://localhost', 'http://192.168.10.9',]
+let allow_origin = '*'
+const corsOptions = {
+  origin: allow_origin,
+  optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions))
 //
 // for GET Request
 //
@@ -20,6 +31,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 let apiPath = '/api/v1/users'
 app.get(apiPath, (req, res) => {
   console.log("receive GET method at " + apiPath)
+  // console.dir(req)
+  //
+  // Connect database
   const db = new sqlite3.Database(dbPath) // 接続
   // 下がDB処理
   db.all('SELECT * FROM users', (err, rows) => {
@@ -38,8 +52,9 @@ apiPath = '/api/v1/users/:id' // `:id`の中には動的に値が入る
 app.get(apiPath, (req, res) => {
   const id = req.params.id
   // console.log("receive request is ")
-  // console.dir(req)
   console.log("receive GET method at " + apiPath + ' of ' + id)
+  // console.dir(req)
+  //
   // Connect database
   const db = new sqlite3.Database(dbPath)
   //
